@@ -40,23 +40,6 @@ async function main() {
     "NICHO BALANCE: ",
     await ethers.provider.getBalance(signer.address)
   );
-
-  // console.log(await xikService.users("nicho"));
-
-  // await xikService.send("nicho", 50);
-
-  // await signer.sendTransaction({
-  //   to: contractAddress,
-  //   value: 50,
-  //   data: xikService.interface.encodeFunctionData("send", ["nicho", 50]),
-  // });
-
-  // console.log(
-  //   "NICHO BALANCE: ",
-  //   await ethers.provider.getBalance(await xikService.getUserAddress("nicho"))
-  // );
-
-  // console.log(await xikService.getAddress());
 }
 
 // We recommend this pattern to be able to use async/await everywhere

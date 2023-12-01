@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hardhat": "^2.19.1"
+    "hardhat": "^2.19.1",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0"
