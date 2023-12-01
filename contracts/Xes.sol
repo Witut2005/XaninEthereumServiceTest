@@ -8,10 +8,17 @@ contract Xes {
     
     address public creator; 
     uint public amountFounded;
+
+    string[] public keys;
     mapping(string => address) public users;
 
     constructor(){
         creator = msg.sender; 
+    }
+
+    function getKeys() external view returns(string[] memory)
+    {
+        return keys;
     }
 
     function withdrawFundMe() onlyOwner() public {
@@ -24,6 +31,7 @@ contract Xes {
 
     function userCreate(string calldata username) public {
         require(users[username] == address(0x0), "User already exists");
+        keys.push(username);
         users[username] = msg.sender; 
     }
 

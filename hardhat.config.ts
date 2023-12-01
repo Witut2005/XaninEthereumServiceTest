@@ -1,7 +1,8 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "./scripts/balance";
-import "./scripts/send_money";
+import "./tasks/balance";
+import "./tasks/send_money";
+import "./tasks/users";
 
 const config: HardhatUserConfig = {
   paths: {

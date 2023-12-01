@@ -9,6 +9,8 @@ async function main() {
   console.log(`Deployed to ${contractAddress}`);
 
   await xikService.userCreate("nicho");
+  await xikService.userCreate("fromini");
+
   console.log("nicho user address: ", await xikService.getUserAddress("nicho"));
   console.log(
     "invalid user address: ",
