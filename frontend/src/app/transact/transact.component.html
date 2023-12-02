@@ -1,1 +1,7 @@
-<p>transact works!</p>
+<div class="transact-container">
+    <input type="text" placeholder="username" />
+    <input type="button" value="send" />
+    <div>
+        <p *ngFor="let user of users">{{user}}</p>
+    </div>
+</div>
