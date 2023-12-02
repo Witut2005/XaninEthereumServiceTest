@@ -1,7 +1,7 @@
 <div class="transact-container">
-    <input type="text" placeholder="username" />
+    <input type="text" placeholder="username" [(ngModel)]="userInput" (ngModelChange)="handleUserInputChange()" />
     <input type="button" value="send" />
     <div>
-        <p *ngFor="let user of users">{{user}}</p>
+        <p *ngFor="let user of usersFinded">{{user}}</p>
     </div>
 </div>
