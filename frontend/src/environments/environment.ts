@@ -1,5 +1,20 @@
+export enum XesProviders {
+  HARDHAT_NODE = 'HARDHAT_NODE',
+  SEPOLIA_TESTNET = 'SEPOLIA_TESTNET',
+  MAINNET = 'MAINNET',
+}
+
+export enum XesProvidersUrls {
+  HARDHAT_NODE = 'http://127.0.0.1:8545/',
+  SEPOLIA_TESTNET = '',
+  MAINNET = '',
+}
+
+const selectedProvider = XesProviders.HARDHAT_NODE;
+
 export const environment: any = {
-  xesRpcProviderUrl: 'http://127.0.0.1:8545/',
+  xesProvider: selectedProvider,
+  xesRpcProviderUrl: XesProvidersUrls[selectedProvider],
   xesAddress: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
   production: false,
   xesBytecode:
