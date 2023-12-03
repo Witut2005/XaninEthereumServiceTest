@@ -19,6 +19,14 @@ export class TransactComponent {
       .catch((err) => {
         console.error(err);
       });
+    this.ether
+      .getMetamaskAccounts()
+      .then((accounts) => {
+        console.log(accounts);
+      })
+      .catch((err) => {
+        console.error('METAMASK NOT INSTALLED');
+      });
   }
 
   handleUserInputChange(): void {
