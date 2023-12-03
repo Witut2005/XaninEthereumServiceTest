@@ -39,4 +39,15 @@ export class TransactComponent {
       }
     });
   }
+
+  async sendTransaction(): Promise<void> {
+    this.ether
+      .sendTransactionToUser(this.userInput)
+      .then(() => {
+        console.log('ok');
+      })
+      .catch(() => {
+        console.error('not ok bruh');
+      });
+  }
 }

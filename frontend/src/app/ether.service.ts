@@ -25,6 +25,10 @@ export class EtherService {
     return this.xes['getKeys']();
   }
 
+  async getUserAddress(username: string): Promise<string> {
+    return this.xes['users'](username);
+  }
+
   async getMetamaskAccounts(): Promise<string[]> {
     // Check if Metamask is installed
     if (typeof (window as any).ethereum != undefined) {
@@ -36,6 +40,21 @@ export class EtherService {
     }
     return Promise.reject([]);
   }
+
+  async sendTransactionToUser(username: string): Promise<void> {
+    const signer = this.provider.getSigner();
+    const address = await this.getUserAddress(username);
+
+    if (Number(address) == 0) {
+      alert('no such user');
+    } else {
+      signer.sendTransaction({
+        to: address,
+        value: ethers.utils.parseEther('0.0001'),
+      });
+    }
+  }
+
   //     .then((accounts) => {
   //       // Get the first account (current selected account)
   //       const address = accounts[0];
