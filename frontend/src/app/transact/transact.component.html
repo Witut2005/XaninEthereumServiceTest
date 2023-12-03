@@ -1,6 +1,7 @@
 <div class="transact-container">
     <input type="text" placeholder="username" [(ngModel)]="userInput" (ngModelChange)="handleUserInputChange()" />
-    <input type="button" value="send" (click)="sendTransaction()" />
+    <!-- <input type="button" value="send" (click)="sendTransaction()" /> -->
+    <p-button label="Submit" (click)="sendTransaction()"></p-button>
     <div>
         <p *ngFor="let user of usersFinded">{{user}}</p>
     </div>
