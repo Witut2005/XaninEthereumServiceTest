@@ -12,7 +12,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
-
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 @NgModule({
   declarations: [AppComponent, TransactComponent],
   imports: [
@@ -27,8 +28,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
     CheckboxModule,
     RadioButtonModule,
     InputNumberModule,
+    ToastModule,
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

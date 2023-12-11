@@ -45,7 +45,7 @@ export class EtherService {
     const address = await this.getUserAddress(username);
 
     if (Number(address) == 0) {
-      alert('no such user');
+      return Promise.reject();
     } else {
       signer.sendTransaction({
         to: address,

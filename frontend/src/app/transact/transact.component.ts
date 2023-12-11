@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { EtherService } from '../ether.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-transact',
@@ -13,7 +14,10 @@ export class TransactComponent {
   amount!: number;
   suggestions: string[] = ['nicho'];
 
-  constructor(private readonly ether: EtherService) {
+  constructor(
+    private readonly ether: EtherService,
+    private readonly mess: MessageService
+  ) {
     this.ether
       .getUsers()
       .then((users) => {
@@ -48,12 +52,18 @@ export class TransactComponent {
     this.ether
       .sendTransactionToUser(this.userInput)
       .then(() => {
-        alert('Transaction sent successfully');
         this.userInput = '';
         this.amount = undefined as unknown as number;
+        this.mess.add({
+          severity: 'success',
+          summary: 'Transaction sent successfully',
+        });
       })
       .catch(() => {
-        console.error('not ok bruh');
+        this.mess.add({
+          severity: 'error',
+          summary: 'Transaction error',
+        });
       });
   }
 }
