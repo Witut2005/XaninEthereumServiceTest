@@ -1,8 +1,13 @@
 <div class="transact-container">
-    <input type="text" placeholder="username" [(ngModel)]="userInput" (ngModelChange)="handleUserInputChange()" />
-    <!-- <input type="button" value="send" (click)="sendTransaction()" /> -->
-    <p-button label="Submit" (click)="sendTransaction()"></p-button>
     <div>
         <p *ngFor="let user of usersFinded">{{user}}</p>
     </div>
+
+    <p-panel header="XaninEthereumTestService">
+
+        <p-autoComplete [dropdown]="true" [(ngModel)]="userInput" [suggestions]="suggestions" (completeMethod)="autoCompleteInput($event)"></p-autoComplete>
+
+        <p-button label="Submit" (click)="sendTransaction()"></p-button>
+    </p-panel>
+
 </div>

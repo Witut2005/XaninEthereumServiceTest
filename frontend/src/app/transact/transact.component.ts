@@ -9,6 +9,7 @@ import { EtherService } from '../ether.service';
 export class TransactComponent {
   usersFinded: string[] = [];
   userInput: string = '';
+  suggestions: string[] = ['nicho'];
 
   constructor(private readonly ether: EtherService) {
     this.ether
@@ -29,14 +30,15 @@ export class TransactComponent {
       });
   }
 
-  handleUserInputChange(): void {
+  autoCompleteInput(event: any): void {
     this.ether.getUsers().then((users: string[]) => {
-      this.usersFinded = [];
+      this.suggestions = [];
       for (const i in users) {
         if (users[i].indexOf(this.userInput) != -1) {
-          this.usersFinded.push(users[i]);
+          this.suggestions.push(users[i]);
         }
       }
+      console.log(this.suggestions);
     });
   }
 

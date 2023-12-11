@@ -21,7 +21,6 @@ export class EtherService {
   }
 
   async getUsers(): Promise<string[]> {
-    console.log(this.xes);
     return this.xes['getKeys']();
   }
 
