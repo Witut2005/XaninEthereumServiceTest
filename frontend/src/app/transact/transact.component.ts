@@ -8,7 +8,9 @@ import { EtherService } from '../ether.service';
 })
 export class TransactComponent {
   usersFinded: string[] = [];
+
   userInput: string = '';
+  amount!: number;
   suggestions: string[] = ['nicho'];
 
   constructor(private readonly ether: EtherService) {
@@ -46,7 +48,9 @@ export class TransactComponent {
     this.ether
       .sendTransactionToUser(this.userInput)
       .then(() => {
-        console.log('ok');
+        alert('Transaction sent successfully');
+        this.userInput = '';
+        this.amount = undefined as unknown as number;
       })
       .catch(() => {
         console.error('not ok bruh');

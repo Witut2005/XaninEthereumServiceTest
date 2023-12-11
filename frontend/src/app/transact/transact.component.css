@@ -1,0 +1,12 @@
+.transact-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.transact-data {
+    height: 50%;
+    width: 50%;
+}
