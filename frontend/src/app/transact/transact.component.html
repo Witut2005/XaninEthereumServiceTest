@@ -1,10 +1,15 @@
 <div class="transact-container">
     <p-toast></p-toast>
-    <p-panel header="XaninEthereumTestService" class="transact-data">
-        <p-autoComplete [dropdown]="true" [(ngModel)]="userInput" [suggestions]="suggestions" (completeMethod)="autoCompleteInput($event)" placeholder="user"></p-autoComplete>
+    <p-panel header="XaninEthereumTestService" class="transaction-data">
+        <p-autoComplete [style]="{'width':'50%'}" [dropdown]="true" [(ngModel)]="userInput" [suggestions]="suggestions" (completeMethod)="autoCompleteInput($event)" placeholder="user"></p-autoComplete>
         <br>
         <br>
-        <p-inputNumber [(ngModel)]="amount" placeholder="amount"></p-inputNumber>
+        <div class="p-inputgroup transaction-amount">
+            <p-inputNumber [(ngModel)]="amount" placeholder="amount"></p-inputNumber>
+            <span class="p-inputgroup-addon">
+                <i class="pi pi-user">ETH</i>
+            </span>
+        </div>
         <br>
         <br>
         <p-button label="Submit" (click)="sendTransaction()"></p-button>

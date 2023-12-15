@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrimeNGConfig } from 'primeng/api';
+import { MenuItem, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +9,11 @@ import { PrimeNGConfig } from 'primeng/api';
 export class AppComponent implements OnInit {
   constructor(private primengConfig: PrimeNGConfig) {}
   title = 'frontend';
+  items: MenuItem[] = [
+    { label: 'Home' },
+    { label: 'Transact' },
+    { label: 'About' },
+  ];
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;

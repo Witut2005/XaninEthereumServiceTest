@@ -14,6 +14,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
+import { TieredMenuModule } from 'primeng/tieredmenu';
+import { PanelMenuModule } from 'primeng/panelmenu';
 @NgModule({
   declarations: [AppComponent, TransactComponent],
   imports: [
@@ -29,6 +32,9 @@ import { MessageService } from 'primeng/api';
     RadioButtonModule,
     InputNumberModule,
     ToastModule,
+    MenuModule,
+    TieredMenuModule,
+    PanelMenuModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],
