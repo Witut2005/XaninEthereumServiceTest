@@ -6,11 +6,11 @@ export enum XesProviders {
 
 export enum XesProvidersUrls {
   HARDHAT_NODE = 'http://127.0.0.1:8545/',
-  SEPOLIA_TESTNET = '',
+  SEPOLIA_TESTNET = 'https://eth-sepolia.g.alchemy.com/v2/2XqlXsXpIO-Y2sk4QOnaS7vUeiVK5WTe',
   MAINNET = '',
 }
 
-const selectedProvider = XesProviders.HARDHAT_NODE;
+const selectedProvider = XesProviders.SEPOLIA_TESTNET;
 
 export const environment: any = {
   xesProvider: selectedProvider,
