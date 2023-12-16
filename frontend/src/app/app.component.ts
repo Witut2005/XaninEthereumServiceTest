@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuItem, PrimeNGConfig } from 'primeng/api';
 
 @Component({
@@ -7,11 +8,27 @@ import { MenuItem, PrimeNGConfig } from 'primeng/api';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  constructor(private primengConfig: PrimeNGConfig) {}
-  title = 'frontend';
+  constructor(
+    private primengConfig: PrimeNGConfig,
+    private readonly router: Router
+  ) {}
+
+  title = 'XaninEthereumTestService';
+
   items: MenuItem[] = [
     { label: 'Home' },
-    { label: 'Transact' },
+    {
+      label: 'Register',
+      command: () => {
+        this.router.navigateByUrl('register');
+      },
+    },
+    {
+      label: 'Transact',
+      command: () => {
+        this.router.navigateByUrl('transact');
+      },
+    },
     { label: 'About' },
   ];
 

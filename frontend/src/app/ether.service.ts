@@ -54,6 +54,17 @@ export class EtherService {
     }
   }
 
+  async createUser(username: string): Promise<void> {
+    const signer = this.provider.getSigner();
+    const address = await this.getUserAddress(username);
+
+    if (Number(address) == 0) {
+      return Promise.reject();
+    } else {
+      this.xes['createUser'](username);
+    }
+  }
+
   //     .then((accounts) => {
   //       // Get the first account (current selected account)
   //       const address = accounts[0];

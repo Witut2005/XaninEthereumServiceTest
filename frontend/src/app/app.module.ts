@@ -17,8 +17,9 @@ import { MessageService } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { RegisterComponent } from './register/register.component';
 @NgModule({
-  declarations: [AppComponent, TransactComponent],
+  declarations: [AppComponent, TransactComponent, RegisterComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
