@@ -30,7 +30,7 @@ contract Xes {
     }
 
     function userCreate(string calldata username) public {
-        require(users[username] == address(0x0), "User already exists");
+        // require(users[username] != address(0x0), "User already exists");
         keys.push(username);
         users[username] = msg.sender; 
     }

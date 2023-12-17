@@ -1,1 +1,9 @@
-<p>register works!</p>
+<div class="register-container">
+    <p-toast></p-toast>
+    <p-panel header="XaninEthereumTestService" class="register-data">
+        <input pInputText [style]="{'width':'50%'}" [(ngModel)]="userInput" placeholder="user" />
+        <br>
+        <br>
+        <p-button label="Submit" (click)="userCreate()"></p-button>
+    </p-panel>
+</div>

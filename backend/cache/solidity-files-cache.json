@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/witut/XaninEthereumServiceTest/backend/contracts/Xes.sol": {
-      "lastModificationDate": 1701541978883,
-      "contentHash": "54e9451998ad2ceb6f06d0bce859c90e",
+      "lastModificationDate": 1702815656672,
+      "contentHash": "b1e867f86d922382ac57af3a1a0e8042",
       "sourceName": "contracts/Xes.sol",
       "solcConfig": {
         "version": "0.8.19",

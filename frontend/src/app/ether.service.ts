@@ -1,18 +1,25 @@
 import { Injectable } from '@angular/core';
+import { Alchemy } from 'alchemy-sdk';
 import { ethers } from 'ethers';
-import { environment } from 'src/environments/environment';
+import { alchemySettings, environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EtherService {
-  readonly provider: ethers.providers.JsonRpcProvider;
-  readonly xes;
+  alchemy: Alchemy;
+  wallet: string | undefined = undefined;
+  metamask: any;
+
+  private provider = new ethers.providers.JsonRpcProvider(
+    'https://eth-sepolia.g.alchemy.com/v2/2XqlXsXpIO-Y2sk4QOnaS7vUeiVK5WTe'
+  );
+  private xes: any;
 
   constructor() {
-    this.provider = new ethers.providers.JsonRpcProvider(
-      environment.xesRpcProviderUrl
-    );
+    this.alchemy = new Alchemy(alchemySettings);
+    this.metamask = (window as any).ethereum;
+
     this.xes = new ethers.Contract(
       environment.xesAddress,
       environment.xesAbi,
@@ -20,7 +27,15 @@ export class EtherService {
     );
   }
 
+  async getNonce() {
+    if (this.wallet == undefined) {
+      this.wallet = (await this.getMetamaskAccounts())[0];
+    }
+    return this.alchemy.core.getTransactionCount(this.wallet, 'latest');
+  }
+
   async getUsers(): Promise<string[]> {
+    console.log(environment.xesAddress);
     return this.xes['getKeys']();
   }
 
@@ -54,26 +69,51 @@ export class EtherService {
     }
   }
 
-  async createUser(username: string): Promise<void> {
-    const signer = this.provider.getSigner();
-    const address = await this.getUserAddress(username);
-
-    if (Number(address) == 0) {
-      return Promise.reject();
-    } else {
-      this.xes['createUser'](username);
-    }
+  async getGasPrice() {
+    return this.metamask.request({ method: 'eth_gasPrice' });
   }
 
-  //     .then((accounts) => {
-  //       // Get the first account (current selected account)
-  //       const address = accounts[0];
-  //       console.log("Public Key (Address):", address);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error getting public key:", error);
-  //     });
-  // } else {
-  //   console.error("Metamask not found. Please install Metamask extension.");
-  // }
+  async sendTransaction(
+    to: string,
+    value: string,
+    gas: string,
+    gasPrice: string,
+    nonce: string,
+    data: string
+  ) {
+    const param = {
+      to,
+      from: (await this.getMetamaskAccounts())[0],
+      value,
+      gas,
+      gasPrice,
+      nonce,
+      data,
+    };
+
+    console.log('signing transaction: ', param);
+
+    return this.metamask.request({
+      method: 'eth_sendTransaction',
+      params: [param],
+    });
+  }
+
+  async userCreate(username: string): Promise<any> {
+    this.sendTransaction(
+      environment.xesAddress,
+      '0x0',
+      '21000',
+      await this.getGasPrice(),
+      (await this.getNonce()).toString(),
+      this.xes.interface.encodeFunctionData('userCreate', [username])
+    );
+    // const signer = await this.provider.getSigner();
+    // signer.sendTransaction({
+    //   to: environment.xesAddress,
+    //   gasLimit: 21000,
+    //   gasPrice: await this.getGasPrice(),
+    //   data: this.xes.interface.encodeFunctionData('userCreate', [username]),
+    // });
+  }
 }
