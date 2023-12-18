@@ -44,15 +44,9 @@ export class EtherService {
   }
 
   async getMetamaskAccounts(): Promise<string[]> {
-    // Check if Metamask is installed
-    if (typeof (window as any).ethereum != undefined) {
-      return Promise.resolve(
-        (window as any).ethereum.request({
-          method: 'eth_requestAccounts',
-        })
-      );
-    }
-    return Promise.reject([]);
+    return (window as any).ethereum.request({
+      method: 'eth_requestAccounts',
+    }) as Promise<string[]>;
   }
 
   async sendTransactionToUser(username: string): Promise<void> {
@@ -100,20 +94,13 @@ export class EtherService {
   }
 
   async userCreate(username: string): Promise<any> {
-    this.sendTransaction(
+    return this.sendTransaction(
       environment.xesAddress,
       '0x0',
-      '21000',
+      '100000',
       await this.getGasPrice(),
       (await this.getNonce()).toString(),
       this.xes.interface.encodeFunctionData('userCreate', [username])
     );
-    // const signer = await this.provider.getSigner();
-    // signer.sendTransaction({
-    //   to: environment.xesAddress,
-    //   gasLimit: 21000,
-    //   gasPrice: await this.getGasPrice(),
-    //   data: this.xes.interface.encodeFunctionData('userCreate', [username]),
-    // });
   }
 }

@@ -21,7 +21,7 @@ export class RegisterComponent {
         console.log(users);
       })
       .catch((err) => {
-        console.error(err);
+        console.error('nicerror', err);
       });
     this.ether
       .getMetamaskAccounts()
@@ -29,12 +29,13 @@ export class RegisterComponent {
         console.log(accounts);
       })
       .catch((err) => {
-        console.error('METAMASK NOT INSTALLED');
+        if (err.code === 4001)
+          this.message.add({ summary: 'User rejected', severity: 'warn' });
+        this.message.add({
+          summary: 'Metamask error. Check if metamask is connected to the app',
+          severity: 'error',
+        });
       });
-
-    this.ether.getNonce().then((nonce) => {
-      console.log('NONCE', nonce);
-    });
   }
 
   userCreate(): void {
@@ -42,14 +43,14 @@ export class RegisterComponent {
       .userCreate(this.userInput)
       .then(() => {
         this.message.add({
-          summary: 'User successfully created',
+          summary: 'Transaction successfully ',
           severity: 'success',
         });
       })
       .catch((err) => {
         console.error(err);
         this.message.add({
-          summary: 'Something went wrong',
+          summary: `Something went wrong. Error code: ${err.code}`,
           severity: 'error',
         });
       });
