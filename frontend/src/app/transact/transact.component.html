@@ -5,7 +5,7 @@
         <br>
         <br>
         <div class="p-inputgroup transaction-amount">
-            <p-inputNumber [(ngModel)]="amount" placeholder="amount"></p-inputNumber>
+            <p-inputNumber [(ngModel)]="amount" [minFractionDigits]="6" placeholder="amount"></p-inputNumber>
             <span class="p-inputgroup-addon">
                 <i class="pi pi-user">ETH</i>
             </span>

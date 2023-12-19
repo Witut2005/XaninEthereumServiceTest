@@ -9,10 +9,10 @@ import { alchemySettings, environment } from 'src/environments/environment';
 export class EtherService {
   alchemy: Alchemy;
   wallet: string | undefined = undefined;
-  metamask: any;
+  readonly metamask: any;
 
-  private provider = new ethers.providers.JsonRpcProvider(
-    'https://eth-sepolia.g.alchemy.com/v2/2XqlXsXpIO-Y2sk4QOnaS7vUeiVK5WTe'
+  readonly provider = new ethers.providers.Web3Provider(
+    (window as any).ethereum
   );
   private xes: any;
 
@@ -49,58 +49,32 @@ export class EtherService {
     }) as Promise<string[]>;
   }
 
-  async sendTransactionToUser(username: string): Promise<void> {
+  async sendTransactionToUser(
+    username: string
+  ): Promise<ethers.providers.TransactionResponse> {
     const signer = this.provider.getSigner();
-    const address = await this.getUserAddress(username);
-
-    if (Number(address) == 0) {
-      return Promise.reject();
-    } else {
-      signer.sendTransaction({
-        to: address,
-        value: ethers.utils.parseEther('0.0001'),
-      });
-    }
+    return signer.sendTransaction({
+      to: environment.xesAddress,
+      gasLimit: 100000,
+      gasPrice: await this.getGasPrice(),
+      data: this.xes.interface.encodeFunctionData('userCreate', [username]),
+    });
   }
 
   async getGasPrice() {
     return this.metamask.request({ method: 'eth_gasPrice' });
   }
 
-  async sendTransaction(
-    to: string,
-    value: string,
-    gas: string,
-    gasPrice: string,
-    nonce: string,
-    data: string
-  ) {
-    const param = {
-      to,
-      from: (await this.getMetamaskAccounts())[0],
-      value,
-      gas,
-      gasPrice,
-      nonce,
-      data,
-    };
+  async userCreate(
+    username: string
+  ): Promise<ethers.providers.TransactionResponse> {
+    const signer = this.provider.getSigner();
 
-    console.log('signing transaction: ', param);
-
-    return this.metamask.request({
-      method: 'eth_sendTransaction',
-      params: [param],
+    return signer.sendTransaction({
+      to: environment.xesAddress,
+      data: this.xes.interface.encodeFunctionData('userCreate', [username]),
+      gasLimit: 100000,
+      gasPrice: await this.getGasPrice(),
     });
-  }
-
-  async userCreate(username: string): Promise<any> {
-    return this.sendTransaction(
-      environment.xesAddress,
-      '0x0',
-      '100000',
-      await this.getGasPrice(),
-      (await this.getNonce()).toString(),
-      this.xes.interface.encodeFunctionData('userCreate', [username])
-    );
   }
 }

@@ -41,11 +41,14 @@ export class RegisterComponent {
   userCreate(): void {
     this.ether
       .userCreate(this.userInput)
-      .then(() => {
-        this.message.add({
-          summary: 'Transaction successfully ',
-          severity: 'success',
+      .then((data) => {
+        this.ether.provider.waitForTransaction(data.hash, 5).then(() => {
+          this.message.add({
+            summary: 'Transaction successfully ',
+            severity: 'success',
+          });
         });
+        console.log('data: ', data);
       })
       .catch((err) => {
         console.error(err);
