@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { EtherService } from '../ether.service';
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
+import { ethers } from 'ethers';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +10,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
-  userInput!: string;
+  userInput: string = '';
 
   constructor(
     private readonly ether: EtherService,
@@ -33,27 +34,45 @@ export class RegisterComponent {
           this.message.add({ summary: 'User rejected', severity: 'warn' });
         this.message.add({
           summary: 'Metamask error. Check if metamask is connected to the app',
-          severity: 'error',
+          severity: 'warn',
         });
       });
+  }
+
+  getError(error: any): string {
+    let message = `${error.code}${
+      error.operation ? `: ${error.operation}` : ''
+    }`;
+    if (
+      error.code === 'UNSUPPORTED_OPERATION' &&
+      error.operation === 'getAddress'
+    )
+      message += '. Check if metamask is connected to the app';
+    return message;
   }
 
   userCreate(): void {
     this.ether
       .userCreate(this.userInput)
-      .then((data) => {
-        this.ether.provider.waitForTransaction(data.hash, 5).then(() => {
-          this.message.add({
-            summary: 'Transaction successfully ',
-            severity: 'success',
+      .then((transaction) => {
+        this.ether.provider
+          .waitForTransaction(
+            (transaction as ethers.providers.TransactionResponse).hash,
+            1
+          )
+          .then(() => {
+            this.message.add({
+              summary: 'Transaction successfully ',
+              severity: 'success',
+            });
           });
-        });
-        console.log('data: ', data);
       })
       .catch((err) => {
         console.error(err);
         this.message.add({
-          summary: `Something went wrong. Error code: ${err.code}`,
+          summary: `Something went wrong. ${
+            typeof err === 'string' ? err : this.getError(err)
+          }`,
           severity: 'error',
         });
       });

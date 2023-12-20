@@ -27,12 +27,12 @@ export class EtherService {
     );
   }
 
-  async getNonce() {
-    if (this.wallet == undefined) {
-      this.wallet = (await this.getMetamaskAccounts())[0];
-    }
-    return this.alchemy.core.getTransactionCount(this.wallet, 'latest');
-  }
+  // async getNonce() {
+  //   if (this.wallet == undefined) {
+  //     this.wallet = (await this.getMetamaskAccounts())[0];
+  //   }
+  //   return this.alchemy.core.getTransactionCount(this.wallet, 'latest');
+  // }
 
   async getUsers(): Promise<string[]> {
     console.log(environment.xesAddress);
@@ -56,25 +56,28 @@ export class EtherService {
     return signer.sendTransaction({
       to: environment.xesAddress,
       gasLimit: 100000,
-      gasPrice: await this.getGasPrice(),
+      gasPrice: await this.getMarketGasPrice(),
       data: this.xes.interface.encodeFunctionData('userCreate', [username]),
     });
   }
 
-  async getGasPrice() {
+  async getMarketGasPrice() {
     return this.metamask.request({ method: 'eth_gasPrice' });
   }
 
   async userCreate(
     username: string
-  ): Promise<ethers.providers.TransactionResponse> {
+  ): Promise<ethers.providers.TransactionResponse | string> {
     const signer = this.provider.getSigner();
+
+    if (username.trim().length == 0)
+      return Promise.reject('Username is required');
 
     return signer.sendTransaction({
       to: environment.xesAddress,
       data: this.xes.interface.encodeFunctionData('userCreate', [username]),
       gasLimit: 100000,
-      gasPrice: await this.getGasPrice(),
+      gasPrice: await this.getMarketGasPrice(),
     });
   }
 }
