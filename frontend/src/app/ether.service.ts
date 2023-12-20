@@ -50,14 +50,24 @@ export class EtherService {
   }
 
   async sendTransactionToUser(
-    username: string
+    username: string,
+    amount: number
   ): Promise<ethers.providers.TransactionResponse> {
     const signer = this.provider.getSigner();
+
+    if (username.trim().length == 0)
+      return Promise.reject('Username is required');
+
+    console.log('send transaction');
     return signer.sendTransaction({
       to: environment.xesAddress,
+      data: this.xes.interface.encodeFunctionData('send', [
+        username,
+        ethers.utils.parseEther(amount.toString()),
+      ]),
+      value: ethers.utils.parseEther(amount.toString()),
       gasLimit: 100000,
       gasPrice: await this.getMarketGasPrice(),
-      data: this.xes.interface.encodeFunctionData('userCreate', [username]),
     });
   }
 

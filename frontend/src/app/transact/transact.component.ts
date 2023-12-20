@@ -11,6 +11,7 @@ export class TransactComponent {
   usersFinded: string[] = [];
 
   userInput: string = '';
+  userSelectedAddress: string = '0x0';
   amount!: number;
   suggestions: string[] = ['nicho'];
 
@@ -40,7 +41,9 @@ export class TransactComponent {
     this.ether.getUsers().then((users: string[]) => {
       this.suggestions = [];
       for (const i in users) {
-        if (users[i].indexOf(this.userInput) != -1) {
+        if (
+          users[i].toLowerCase().indexOf(this.userInput.toLowerCase()) != -1
+        ) {
           this.suggestions.push(users[i]);
         }
       }
@@ -48,9 +51,13 @@ export class TransactComponent {
     });
   }
 
+  async getUserAddress() {
+    this.userSelectedAddress = await this.ether.getUserAddress(this.userInput);
+  }
+
   async sendTransaction(): Promise<void> {
     this.ether
-      .sendTransactionToUser(this.userInput)
+      .sendTransactionToUser(this.userInput, this.amount)
       .then(() => {
         this.userInput = '';
         this.amount = undefined as unknown as number;
@@ -59,7 +66,8 @@ export class TransactComponent {
           summary: 'Transaction sent successfully',
         });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error(err);
         this.mess.add({
           severity: 'error',
           summary: 'Transaction error',
