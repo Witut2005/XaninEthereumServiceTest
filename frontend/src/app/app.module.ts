@@ -18,6 +18,7 @@ import { MenuModule } from 'primeng/menu';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { RegisterComponent } from './register/register.component';
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
   declarations: [AppComponent, TransactComponent, RegisterComponent],
   imports: [
@@ -36,6 +37,7 @@ import { RegisterComponent } from './register/register.component';
     MenuModule,
     TieredMenuModule,
     PanelMenuModule,
+    DropdownModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

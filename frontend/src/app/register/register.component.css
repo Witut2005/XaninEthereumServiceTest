@@ -3,10 +3,17 @@
     align-items: center;
     justify-content: center;
     width: 80vw;
-    height: 90vh;
+    height: 100vh;
 }
 
 .register-data {
     height: 50%;
     width: 50%;
+}
+
+.panel-content {
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }

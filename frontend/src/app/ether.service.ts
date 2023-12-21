@@ -3,9 +3,9 @@ import { Alchemy } from 'alchemy-sdk';
 import { Wallet, ethers } from 'ethers';
 import { alchemySettings, environment } from 'src/environments/environment';
 
-enum VerficationMethods {
-  METAMASK = 'METAMASK',
-  PRIVATE_KEY = 'PK',
+export enum VerificationMethods {
+  METAMASK = 'Metamask Wallet',
+  PRIVATE_KEY = 'Private Key',
 }
 
 @Injectable({
@@ -14,7 +14,7 @@ enum VerficationMethods {
 export class EtherService {
   alchemy: Alchemy;
   wallet: Wallet | undefined = undefined;
-  verifcationMethod: VerficationMethods = VerficationMethods.METAMASK;
+  verifcationMethod: VerificationMethods = VerificationMethods.METAMASK;
   readonly metamask: any;
 
   readonly provider = new ethers.providers.Web3Provider(
@@ -55,7 +55,7 @@ export class EtherService {
     }) as Promise<string[]>;
   }
 
-  setVerificationMethod(method: VerficationMethods) {
+  setVerificationMethod(method: VerificationMethods) {
     this.verifcationMethod = method;
   }
 
@@ -70,9 +70,9 @@ export class EtherService {
   async sendTransaction(
     transaction: ethers.utils.Deferrable<ethers.providers.TransactionRequest>
   ): Promise<any> {
-    if (this.verifcationMethod === VerficationMethods.PRIVATE_KEY) {
+    if (this.verifcationMethod === VerificationMethods.PRIVATE_KEY) {
       return this.wallet?.sendTransaction(transaction);
-    } else if (this.verifcationMethod === VerficationMethods.METAMASK) {
+    } else if (this.verifcationMethod === VerificationMethods.METAMASK) {
       const signer = this.provider.getSigner();
       return signer.sendTransaction(transaction);
     }

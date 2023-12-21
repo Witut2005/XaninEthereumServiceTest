@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EtherService } from '../ether.service';
+import { EtherService, VerificationMethods } from '../ether.service';
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { ethers } from 'ethers';
@@ -10,7 +10,11 @@ import { ethers } from 'ethers';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
+  VerificationMethods = VerificationMethods;
+
   userInput: string = '';
+  verificationModeSelected: string = VerificationMethods.METAMASK;
+  readonly verificationOptions: string[] = ['Metamask Wallet', 'Private Key'];
 
   constructor(
     private readonly ether: EtherService,
@@ -37,6 +41,13 @@ export class RegisterComponent {
           severity: 'warn',
         });
       });
+  }
+
+  handleVerificationModeChange() {
+    this.ether.setVerificationMethod(
+      this.verificationModeSelected as VerificationMethods
+    );
+    console.log(this.verificationModeSelected);
   }
 
   getError(error: any): string {

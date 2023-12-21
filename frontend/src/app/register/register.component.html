@@ -1,9 +1,11 @@
 <div class="register-container">
     <p-toast></p-toast>
     <p-panel header="XaninEthereumTestService" class="register-data">
-        <input pInputText [style]="{'width':'50%'}" [(ngModel)]="userInput" placeholder="user" />
-        <br>
-        <br>
-        <p-button label="Submit" (click)="userCreate()"></p-button>
+        <div class="panel-content">
+            <input pInputText [style]="{'width':'50%'}" [(ngModel)]="userInput" placeholder="user" />
+            <p-dropdown [style]="{'width': '50%'}" [options]="verificationOptions" [(ngModel)]="verificationModeSelected" (ngModelChange)="handleVerificationModeChange()" placeholder="Select verification method"></p-dropdown>
+            <input [style]="{'width': '50%'}" *ngIf="verificationModeSelected == VerificationMethods.PRIVATE_KEY" pInputText [style]="{'width':'50%'}" placeholder="private key" />
+            <p-button [style]="{'width': '50%'}" label="Submit" (click)="userCreate()"></p-button>
+        </div>
     </p-panel>
 </div>
