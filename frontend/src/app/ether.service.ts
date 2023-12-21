@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Alchemy } from 'alchemy-sdk';
-import { ethers } from 'ethers';
+import { Wallet, ethers } from 'ethers';
 import { alchemySettings, environment } from 'src/environments/environment';
+
+enum VerficationMethods {
+  METAMASK = 'METAMASK',
+  PRIVATE_KEY = 'PK',
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class EtherService {
   alchemy: Alchemy;
-  wallet: string | undefined = undefined;
+  wallet: Wallet | undefined = undefined;
+  verifcationMethod: VerficationMethods = VerficationMethods.METAMASK;
   readonly metamask: any;
 
   readonly provider = new ethers.providers.Web3Provider(
@@ -49,17 +55,37 @@ export class EtherService {
     }) as Promise<string[]>;
   }
 
+  setVerificationMethod(method: VerficationMethods) {
+    this.verifcationMethod = method;
+  }
+
+  setWalletPk(pk: string) {
+    this.wallet = new Wallet(pk);
+  }
+
+  getVerificationMethod() {
+    return this.verifcationMethod;
+  }
+
+  async sendTransaction(
+    transaction: ethers.utils.Deferrable<ethers.providers.TransactionRequest>
+  ): Promise<any> {
+    if (this.verifcationMethod === VerficationMethods.PRIVATE_KEY) {
+      return this.wallet?.sendTransaction(transaction);
+    } else if (this.verifcationMethod === VerficationMethods.METAMASK) {
+      const signer = this.provider.getSigner();
+      return signer.sendTransaction(transaction);
+    }
+  }
+
   async sendTransactionToUser(
     username: string,
     amount: number
   ): Promise<ethers.providers.TransactionResponse> {
-    const signer = this.provider.getSigner();
-
     if (username.trim().length == 0)
       return Promise.reject('Username is required');
 
-    console.log('send transaction');
-    return signer.sendTransaction({
+    return this.sendTransaction({
       to: environment.xesAddress,
       data: this.xes.interface.encodeFunctionData('send', [
         username,
